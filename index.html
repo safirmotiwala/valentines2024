@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('moon_dark.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            position: relative;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            max-width: 50%;
+            max-height: 50%;
+            display: block;
+            margin: 5% 50%;
+        }
+
+        .stars-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 33.33vh;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: twinkling 1s infinite alternate;
+        }
+
+        .meteor {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 5px;
+            height: 50px;
+            background-color: rgb(208, 228, 170);
+            border-radius: 50%;
+            animation: fall 10s linear infinite;
+        }
+
+        .romantic-message {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+        }
+
+        .show-card {
+            background-color: #ff4d6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .show-card:hover {
+            background-color: #ff6384;
+        }
+
+        .show-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .show-card:hover::before {
+            width: 0;
+            height: 0;
+        }
+
+        .show-card span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .show-card.clicked + .card {
+            display: block;
+        }
+
+        .card-content {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .card-buttons {
+            margin-top: 20px;
+        }
+
+        .card-buttons button {
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 20px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-buttons button:hover {
+            background-color: #ff4d6b;
+            color: white;
+        }
+
+        .romantic-message p span {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+            animation: typing 7s steps(40, end) forwards;
+            display: inline-block;
+            font-family: 'Pacifico', cursive;
+            font-size: 25px;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes fall {
+            0% {
+                top: 0;
+                left: 70%;
+                transform: rotate(45deg);
+            }
+            100% {
+                top: 100vh;
+                left: -10px;
+                transform: rotate(45deg);
+            }
+        }
+
+        @keyframes twinkling {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        
+    </style>
+</head>
+<body>
+    
+    <div class="stars-container" id="stars-container">
+        <div class="meteor"></div>
+    </div>
+
+    <div style="justify-content: center; align-items: center;">
+        <img src="man_woman.png" alt="Man and Woman">
+    </div>
+
+    <div class="romantic-message">
+        <p>
+            <span>Hey, I had <b style="color: #f00;">something</b> to tell you tonight.</span><br>
+        </p>
+        <button class="show-card" onclick="toggleCard()"><span>💕</span></button> <!-- Heart symbol button -->
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <p style="color: black;">I wish I could scramble 18 pages front and back, but I kept dreaming of you all night. I know its not in my fate, but then why does it feel so right! I see forever in your eyes, can we begin us with a <b style="color: #f00;">Valentine</b>?</p>
+            <div class="card-buttons">
+                <button onclick="navigateToInstagram()">Yes</button>
+                <button onclick="showNoOptions()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        const instagramLink = 'https://www.instagram.com/safirmotiwala';
+
+        const starsContainer = document.getElementById('stars-container');
+
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.top = random(0, 100) + '%';
+            star.style.left = random(0, 100) + '%';
+            starsContainer.appendChild(star);
+        }
+
+        function toggleCard() {
+            const card = document.querySelector('.card');
+            const showCardButton = document.querySelector('.show-card');
+            showCardButton.classList.toggle('clicked');
+            card.style.display = card.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function navigateToInstagram() {
+            window.location.href = instagramLink;
+        }
+
+        function showNoOptions() {
+            alert("Its a No");
+        }
+    </script>
+</body>
+</html>
